@@ -59,7 +59,7 @@ struct b2Vec2
 	b2Vec2(float32 x, float32 y) : x(x), y(y) {}
 
 	/// Set this vector to all zeros.
-	void SetZero() { x = 0.0f; y = 0.0f; }
+	void SetZero() { x = 0.0f; y = 0.0f; } 
 
 	/// Set this vector to some specified coordinates.
 	void Set(float32 x_, float32 y_) { x = x_; y = y_; }

@@ -27,26 +27,87 @@ bool ModulePhysics::Start()
 {
 	LOG("Creating Physics 2D environment");
 
+	//---WORLD CREATION---//
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
-	// TODO 3: You need to make ModulePhysics class a contact listener
 
-	// big static circle as "ground" in the middle of the screen
-	int x = SCREEN_WIDTH / 2;
-	int y = SCREEN_HEIGHT / 1.5f;
-	int diameter = SCREEN_WIDTH / 2;
+	//---MAP BORDERS---//
 
 	b2BodyDef body;
 	body.type = b2_staticBody;
-	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.position.Set(0, 0);
 
 	b2Body* b = world->CreateBody(&body);
 
-	b2CircleShape shape;
-	shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
+	b2Vec2 v1(PIXEL_TO_METERS(0.0f), PIXEL_TO_METERS(0.0f));
+	b2Vec2 v2(PIXEL_TO_METERS(600.0f), PIXEL_TO_METERS(0.0f));
+	b2Vec2 v3(PIXEL_TO_METERS(600.0f), PIXEL_TO_METERS(900.0f));
+	b2Vec2 v4(PIXEL_TO_METERS(0.0f), PIXEL_TO_METERS(900.0f));
 
-	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	b->CreateFixture(&fixture);
+	b2EdgeShape edge1; 		edge1.Set(v1, v4);
+	b2EdgeShape edge2;		edge2.Set(v4, v3);
+	b2EdgeShape edge3;		edge3.Set(v2, v3);
+	b2EdgeShape edge4;		edge4.Set(v1, v2);
+
+	b2FixtureDef fixture1;	fixture1.shape = &edge1;
+	b2FixtureDef fixture2;	fixture2.shape = &edge2;
+	b2FixtureDef fixture3;	fixture3.shape = &edge3;
+	b2FixtureDef fixture4;	fixture4.shape = &edge4;
+
+	b->CreateFixture(&fixture1);
+	b->CreateFixture(&fixture2);
+	b->CreateFixture(&fixture3);
+	b->CreateFixture(&fixture4);
+
+	//---SPRING CREATION---//
+
+	//--Bodies for the spring fixture---//
+
+	b2BodyDef sBody1_def;
+	sBody1_def.type = b2_staticBody;
+	sBody1_def.position.Set(PIXEL_TO_METERS(500.0f), PIXEL_TO_METERS(800.0f));
+
+	b2Body* sBody1 = world->CreateBody(&sBody1_def);
+
+	b2PolygonShape sShape1;
+	sShape1.SetAsBox(PIXEL_TO_METERS(50.0f), PIXEL_TO_METERS(50.0f));
+
+	b2FixtureDef sFixture1;
+	sFixture1.shape = &sShape1;
+
+	sBody1->CreateFixture(&sFixture1);
+
+	b2BodyDef sBody2_def;
+	sBody2_def.type = b2_dynamicBody;
+	sBody2_def.position.Set(PIXEL_TO_METERS(500.0f), PIXEL_TO_METERS(700.0f));
+	
+	b2Body* sBody2 = world->CreateBody(&sBody2_def);
+
+	b2PolygonShape sShape2;
+	sShape2.SetAsBox(PIXEL_TO_METERS(50.0f), PIXEL_TO_METERS(10.0f));
+
+	b2FixtureDef sFixture2;
+	sFixture2.shape = &sShape2;
+
+	sBody2->CreateFixture(&sFixture2);
+
+	//--Fixture(hopefully a spring)--//
+	b2Vec2 sAnchor1;
+	sAnchor1.Set(PIXEL_TO_METERS(525.0f), PIXEL_TO_METERS(825.0f));
+	b2Vec2 sAnchor2;
+	sAnchor2.Set(PIXEL_TO_METERS(525.0f), PIXEL_TO_METERS(705.0f));
+
+	b2DistanceJointDef jointDef;
+	jointDef.Initialize(sBody1, sBody2, sAnchor1, sAnchor2);
+	jointDef.collideConnected = false;
+	jointDef.bodyA = sBody1;
+	jointDef.bodyB = sBody2;
+	jointDef.frequencyHz = 0.0f;
+	jointDef.dampingRatio = 1.0f;
+
+	b2DistanceJoint* joint = (b2DistanceJoint*)world->CreateJoint(&jointDef);
+
+
+	// TODO 3: You need to make ModulePhysics class a contact listener
 
 	return true;
 }
@@ -209,7 +270,7 @@ update_status ModulePhysics::PostUpdate()
 					}
 
 					v = b->GetWorldPoint(shape->m_vertices[0]);
-					App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+					App->renderer->DrawLine(METERS_TO_PIXELS(prev.x),(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
 				}
 				break;
 

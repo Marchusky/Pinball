@@ -9,6 +9,8 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	//DO ALL PUSHBACKS FROM THE BACKGROUND 
+
 	circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
@@ -51,6 +53,7 @@ update_status ModuleSceneIntro::Update()
 		ray_on = !ray_on;
 		ray.x = App->input->GetMouseX();
 		ray.y = App->input->GetMouseY();
+
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
