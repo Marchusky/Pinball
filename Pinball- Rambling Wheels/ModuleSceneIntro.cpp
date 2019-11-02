@@ -10,6 +10,7 @@
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	//DO ALL PUSHBACKS FROM THE BACKGROUND 
+	
 
 	circle = box = rick = NULL;
 	ray_on = false;
@@ -27,6 +28,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	background = App->textures->Load("pinball/background sprites.png");
 	circle = App->textures->Load("pinball/wheel.png"); 
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
@@ -48,6 +50,14 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	//TEMPORALY BLIT THE BACKGROUND
+	SDL_Rect rect;
+	rect.h = 900;
+	rect.w = 600;
+	rect.x = rect.y = 0;
+
+	App->renderer->Blit(background, 0, 0, &rect);
+
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
@@ -55,8 +65,7 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 
 	}
-
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_UP)
 	{
 		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 25));
 		// TODO 8: Make sure to add yourself as collision callback to the circle you creates

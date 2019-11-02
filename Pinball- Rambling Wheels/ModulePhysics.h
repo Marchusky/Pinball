@@ -48,7 +48,9 @@ public:
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
-
+	
+	b2Body* sBody2;
+	bool forceON = false;
 private:
 
 	bool debug;

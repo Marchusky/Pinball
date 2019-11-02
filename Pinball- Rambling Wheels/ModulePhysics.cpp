@@ -78,34 +78,61 @@ bool ModulePhysics::Start()
 
 	b2BodyDef sBody2_def;
 	sBody2_def.type = b2_dynamicBody;
-	sBody2_def.position.Set(PIXEL_TO_METERS(500.0f), PIXEL_TO_METERS(700.0f));
+	sBody2_def.position.Set(PIXEL_TO_METERS(500.0f), PIXEL_TO_METERS(600.0f));
 	
-	b2Body* sBody2 = world->CreateBody(&sBody2_def);
+	sBody2 = world->CreateBody(&sBody2_def);
 
 	b2PolygonShape sShape2;
 	sShape2.SetAsBox(PIXEL_TO_METERS(50.0f), PIXEL_TO_METERS(10.0f));
 
 	b2FixtureDef sFixture2;
 	sFixture2.shape = &sShape2;
+	sFixture2.density = 1;
 
 	sBody2->CreateFixture(&sFixture2);
 
+	//--Borders--//
+
+	b2BodyDef bBody1_def;
+	bBody1_def.type = b2_staticBody;
+	bBody1_def.position.Set(PIXEL_TO_METERS(440.0f), PIXEL_TO_METERS(700.0f));
+
+	b2Body* bBody1 = world->CreateBody(&bBody1_def);
+
+	b2PolygonShape bShape;
+	bShape.SetAsBox(PIXEL_TO_METERS(5.0f), PIXEL_TO_METERS(150.0f));
+
+	b2FixtureDef bFixture1;
+	bFixture1.shape = &bShape;
+
+	bBody1->CreateFixture(&bFixture1);
+
+	b2BodyDef bBody2_def;
+	bBody2_def.type = b2_staticBody;
+	bBody2_def.position.Set(PIXEL_TO_METERS(560.0f), PIXEL_TO_METERS(700.0f));
+
+	b2Body* bBody2 = world->CreateBody(&bBody2_def);
+
+	b2FixtureDef bFixture2;
+	bFixture2.shape = &bShape;
+	
+	bBody2->CreateFixture(&bFixture2);
+
 	//--Fixture(hopefully a spring)--//
-	b2Vec2 sAnchor1;
-	sAnchor1.Set(PIXEL_TO_METERS(525.0f), PIXEL_TO_METERS(825.0f));
-	b2Vec2 sAnchor2;
-	sAnchor2.Set(PIXEL_TO_METERS(525.0f), PIXEL_TO_METERS(705.0f));
+	b2Vec2 sAnchor1 = sBody1->GetWorldCenter();
+	b2Vec2 sAnchor2 = sBody2->GetWorldCenter();
 
 	b2DistanceJointDef jointDef;
 	jointDef.Initialize(sBody1, sBody2, sAnchor1, sAnchor2);
-	jointDef.collideConnected = false;
+	jointDef.collideConnected = true;
 	jointDef.bodyA = sBody1;
 	jointDef.bodyB = sBody2;
-	jointDef.frequencyHz = 0.0f;
-	jointDef.dampingRatio = 1.0f;
+	jointDef.frequencyHz = 2.0f;
+	jointDef.dampingRatio = 0.7f;
 
 	b2DistanceJoint* joint = (b2DistanceJoint*)world->CreateJoint(&jointDef);
-
+
+
 
 	// TODO 3: You need to make ModulePhysics class a contact listener
 
@@ -117,6 +144,21 @@ update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
 
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	{
+		forceON = true;
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+	{
+		forceON = false;
+		sBody2->ApplyForce(b2Vec2(0, -5000), sBody2->GetWorldCenter(), true);
+	}
+
+	if(forceON)
+	{
+		sBody2->ApplyForce(b2Vec2(0, 300), sBody2->GetWorldCenter(), true);
+	}
 	// TODO: HomeWork
 	/*
 	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
