@@ -62,6 +62,7 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(background, 0, 0, &rect);
 
+	
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;

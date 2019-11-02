@@ -61,6 +61,54 @@ bool ModulePhysics::Start()
 	b->CreateFixture(&fixture3);
 	b->CreateFixture(&fixture4);
 
+	//Map borders
+	int Back[88] = {
+	555, 1000,
+	555, 437,
+	558, 311,
+	556, 254,
+	540, 206,
+	524, 172,
+	492, 129,
+	457, 102,
+	443, 108,
+	433, 126,
+	445, 152,
+	466, 202,
+	481, 258,
+	483, 314,
+	478, 378,
+	462, 427,
+	445, 463,
+	541, 557,
+	545, 761,
+	536, 777,
+	515, 797,
+	388, 899,
+	173, 898,
+	22, 780,
+	13, 767,
+	11, 755,
+	10, 545,
+	112, 448,
+	84, 375,
+	71, 313,
+	74, 261,
+	83, 212,
+	108, 152,
+	159, 87,
+	216, 42,
+	305, 23,
+	402, 30,
+	463, 61,
+	514, 99,
+	554, 157,
+	578, 216,
+	582, 276,
+	584, 393,
+	584, 1000
+	};
+	App->physics->CreateChain(0, 0, Back, 88);
 
 	//---SPRING CREATION---//
 
@@ -255,7 +303,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
