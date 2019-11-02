@@ -42,21 +42,25 @@ bool ModulePhysics::Start()
 	b2Vec2 v2(PIXEL_TO_METERS(600.0f), PIXEL_TO_METERS(0.0f));
 	b2Vec2 v3(PIXEL_TO_METERS(600.0f), PIXEL_TO_METERS(900.0f));
 	b2Vec2 v4(PIXEL_TO_METERS(0.0f), PIXEL_TO_METERS(900.0f));
+	b2Vec2 v5(PIXEL_TO_METERS(550.0f), PIXEL_TO_METERS(900.0f));
 
 	b2EdgeShape edge1; 		edge1.Set(v1, v4);
-	b2EdgeShape edge2;		edge2.Set(v4, v3);
+	b2EdgeShape edge2;		edge2.Set(v4, v5);
 	b2EdgeShape edge3;		edge3.Set(v2, v3);
 	b2EdgeShape edge4;		edge4.Set(v1, v2);
+
 
 	b2FixtureDef fixture1;	fixture1.shape = &edge1;
 	b2FixtureDef fixture2;	fixture2.shape = &edge2;
 	b2FixtureDef fixture3;	fixture3.shape = &edge3;
 	b2FixtureDef fixture4;	fixture4.shape = &edge4;
+ 
 
 	b->CreateFixture(&fixture1);
 	b->CreateFixture(&fixture2);
 	b->CreateFixture(&fixture3);
 	b->CreateFixture(&fixture4);
+
 
 	//---SPRING CREATION---//
 
@@ -64,12 +68,12 @@ bool ModulePhysics::Start()
 
 	b2BodyDef sBody1_def;
 	sBody1_def.type = b2_staticBody;
-	sBody1_def.position.Set(PIXEL_TO_METERS(500.0f), PIXEL_TO_METERS(800.0f));
+	sBody1_def.position.Set(PIXEL_TO_METERS(575.0f), PIXEL_TO_METERS(940.0f));
 
 	b2Body* sBody1 = world->CreateBody(&sBody1_def);
 
 	b2PolygonShape sShape1;
-	sShape1.SetAsBox(PIXEL_TO_METERS(50.0f), PIXEL_TO_METERS(50.0f));
+	sShape1.SetAsBox(PIXEL_TO_METERS(20.0f), PIXEL_TO_METERS(1.0f));
 
 	b2FixtureDef sFixture1;
 	sFixture1.shape = &sShape1;
@@ -78,29 +82,35 @@ bool ModulePhysics::Start()
 
 	b2BodyDef sBody2_def;
 	sBody2_def.type = b2_dynamicBody;
-	sBody2_def.position.Set(PIXEL_TO_METERS(500.0f), PIXEL_TO_METERS(600.0f));
+	sBody2_def.position.Set(PIXEL_TO_METERS(580.0f), PIXEL_TO_METERS(805.0f));
 	
 	sBody2 = world->CreateBody(&sBody2_def);
 
 	b2PolygonShape sShape2;
-	sShape2.SetAsBox(PIXEL_TO_METERS(50.0f), PIXEL_TO_METERS(10.0f));
+	sShape2.SetAsBox(PIXEL_TO_METERS(7.0f), PIXEL_TO_METERS(5.0f));
+	b2PolygonShape sShape3;
+	sShape3.SetAsBox(PIXEL_TO_METERS(4.0f), PIXEL_TO_METERS(35.0f));
 
 	b2FixtureDef sFixture2;
 	sFixture2.shape = &sShape2;
-	sFixture2.density = 1;
-
+	sFixture2.density = 5;
 	sBody2->CreateFixture(&sFixture2);
 
-	//--Borders--//
+	b2FixtureDef sFixture3;
+	sFixture3.shape = &sShape3;
+	sFixture2.density = 5;
+	sBody2->CreateFixture(&sFixture3);
+
+	//--Borders----------------------------------------------------------------//
 
 	b2BodyDef bBody1_def;
 	bBody1_def.type = b2_staticBody;
-	bBody1_def.position.Set(PIXEL_TO_METERS(440.0f), PIXEL_TO_METERS(700.0f));
+	bBody1_def.position.Set(PIXEL_TO_METERS(560.5f), PIXEL_TO_METERS(920.0f));
 
 	b2Body* bBody1 = world->CreateBody(&bBody1_def);
 
 	b2PolygonShape bShape;
-	bShape.SetAsBox(PIXEL_TO_METERS(5.0f), PIXEL_TO_METERS(150.0f));
+	bShape.SetAsBox(PIXEL_TO_METERS(3.0f), PIXEL_TO_METERS(150.0f));
 
 	b2FixtureDef bFixture1;
 	bFixture1.shape = &bShape;
@@ -109,7 +119,7 @@ bool ModulePhysics::Start()
 
 	b2BodyDef bBody2_def;
 	bBody2_def.type = b2_staticBody;
-	bBody2_def.position.Set(PIXEL_TO_METERS(560.0f), PIXEL_TO_METERS(700.0f));
+	bBody2_def.position.Set(PIXEL_TO_METERS(582.0f), PIXEL_TO_METERS(920.0f));
 
 	b2Body* bBody2 = world->CreateBody(&bBody2_def);
 
@@ -118,7 +128,34 @@ bool ModulePhysics::Start()
 	
 	bBody2->CreateFixture(&bFixture2);
 
-	//--Fixture(hopefully a spring)--//
+	b2BodyDef bBody3_def;
+	bBody3_def.type = b2_staticBody;
+	bBody3_def.position.Set(PIXEL_TO_METERS(562.0f), PIXEL_TO_METERS(770.0f));
+
+	b2Body* bBody3 = world->CreateBody(&bBody3_def);
+
+	b2PolygonShape bShape2;
+	bShape2.SetAsBox(PIXEL_TO_METERS(2.0f), PIXEL_TO_METERS(1.0f));
+
+	b2FixtureDef bFixture3;
+	bFixture3.shape = &bShape2;
+
+	bBody3->CreateFixture(&bFixture3);
+
+	b2BodyDef bBody4_def;
+	bBody4_def.type = b2_staticBody;
+	bBody4_def.position.Set(PIXEL_TO_METERS(580.0f), PIXEL_TO_METERS(770.0f));
+
+	b2Body* bBody4 = world->CreateBody(&bBody4_def);
+
+	b2FixtureDef bFixture4;
+	bFixture4.shape = &bShape2;
+
+	bBody4->CreateFixture(&bFixture4);
+
+
+	//--Fixture(hopefully a spring)------------------------------------------//
+
 	b2Vec2 sAnchor1 = sBody1->GetWorldCenter();
 	b2Vec2 sAnchor2 = sBody2->GetWorldCenter();
 
@@ -128,11 +165,13 @@ bool ModulePhysics::Start()
 	jointDef.bodyA = sBody1;
 	jointDef.bodyB = sBody2;
 	jointDef.frequencyHz = 2.0f;
-	jointDef.dampingRatio = 0.7f;
+	jointDef.dampingRatio = 0.3f;
 
 	b2DistanceJoint* joint = (b2DistanceJoint*)world->CreateJoint(&jointDef);
 
+	//---Da Ball-------------------------------------------------------------//
 
+	Ball = CreateCircle(572.5f, 750.0f, 11, 0.1f);
 
 	// TODO 3: You need to make ModulePhysics class a contact listener
 
@@ -157,7 +196,7 @@ update_status ModulePhysics::PreUpdate()
 
 	if(forceON)
 	{
-		sBody2->ApplyForce(b2Vec2(0, 300), sBody2->GetWorldCenter(), true);
+		sBody2->ApplyForce(b2Vec2(0, 1000), sBody2->GetWorldCenter(), true);
 	}
 	// TODO: HomeWork
 	/*
@@ -169,7 +208,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, float density)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
@@ -181,7 +220,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	shape.m_radius = PIXEL_TO_METERS(radius);
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	fixture.density = 1.0f;
+	fixture.density = density;
 
 	b->CreateFixture(&fixture);
 
@@ -258,6 +297,7 @@ update_status ModulePhysics::PostUpdate()
 
 	if(!debug)
 		return UPDATE_CONTINUE;
+
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
