@@ -169,10 +169,6 @@ bool ModulePhysics::Start()
 
 	b2DistanceJoint* joint = (b2DistanceJoint*)world->CreateJoint(&jointDef);
 
-	//---Da Ball-------------------------------------------------------------//
-
-	Ball = CreateCircle(572.5f, 750.0f, 11, 0.1f);
-
 	// TODO 3: You need to make ModulePhysics class a contact listener
 
 	return true;

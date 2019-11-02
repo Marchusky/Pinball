@@ -22,6 +22,7 @@ public:
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 
+	PhysBody* Ball;
 	PhysBody* sensor;
 	bool sensed;
 
@@ -29,7 +30,9 @@ public:
 	SDL_Texture* box;
 	SDL_Texture* rick;
 	SDL_Texture* background;
+	SDL_Texture* ball_tex;
 	uint bonus_fx;
 	p2Point<int> ray;
+
 	bool ray_on;
 };

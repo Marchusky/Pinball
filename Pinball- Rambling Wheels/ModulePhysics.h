@@ -50,7 +50,7 @@ public:
 	PhysBody* CreateChain(int x, int y, int* points, int size);
 	
 	b2Body* sBody2;
-	PhysBody* Ball;
+
 	bool forceON = false;
 private:
 

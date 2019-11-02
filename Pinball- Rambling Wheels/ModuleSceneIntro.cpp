@@ -12,7 +12,7 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 	//DO ALL PUSHBACKS FROM THE BACKGROUND 
 	
 
-	circle = box = rick = NULL;
+	ball_tex = circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -29,12 +29,16 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	background = App->textures->Load("pinball/background sprites.png");
+	ball_tex = App->textures->Load("pinball/ball_tex.png");
 	circle = App->textures->Load("pinball/wheel.png"); 
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	// TODO: Homework - create a sensor
+
+	//---Da Ball-------------------------------------------------------------//
+	Ball = App->physics->CreateCircle(572.5f, 750.0f, 11, 0.1f);
 
 	return ret;
 }
@@ -127,6 +131,13 @@ update_status ModuleSceneIntro::Update()
 	fVector normal(0.0f, 0.0f);
 
 	// All draw functions ------------------------------------------------------
+
+	if (Ball != NULL)
+	{
+		int x, y;
+		Ball->GetPosition(x, y);
+		App->renderer->Blit(ball_tex, x-3, y-2, NULL, 1.0f, Ball->GetRotation());
+	}
 	p2List_item<PhysBody*>* c = circles.getFirst();
 
 	while(c != NULL)
