@@ -55,6 +55,7 @@ update_status ModulePlayer::Update()
 		App->renderer->Blit(ball_tex, x - 3, y - 2, NULL, 1.0f, Ball->GetRotation());
 	}
 
+
 	return UPDATE_CONTINUE;
 }
 
@@ -62,16 +63,17 @@ update_status ModulePlayer::Update()
 void ModulePlayer::SetBallPosition(int x, int y)
 {
 	Ball = App->physics->CreateCircle(Ball_x, Ball_y, Ball_radius, 0.1f);
-	App->renderer->Blit(ball_tex, Ball_x - 3, Ball_y - 2, NULL, 1.0f, Ball->GetRotation());
 }
 
 void ModulePlayer::Lives()
 {
-	if (Ball_y < 900)
+	int x, y;
+	Ball->GetPosition(x, y);
+	if (y < 800)
 	{
 		dead = false;
 	}
-	else if (Ball_y >= 900 && !dead)
+	else if (y >= 900 && !dead)
 	{
 		dead = true;
 		lives--; //correcto?
@@ -79,22 +81,13 @@ void ModulePlayer::Lives()
 		if (lives != 0)
 		{
 			App->audio->PlayFx(dead_fx);
+			Ball->body->SetTransform(b2Vec2(Ball_x, Ball_y), 0.0f);
 			SetBallPosition(Ball_x, Ball_y);
+			dead = false;
 		}
 		else
 		{
-			//Actualice highscore at the end of a game
-			if (high_score_points < score_points)
-			{
-				high_score_points = score_points;
-			}
-			//Print score & highscore
-			if (App->input->GetKey(SDL_SCANCODE_SPACE))
-			{
-				SetBallPosition(Ball_x, Ball_y);
-				lives = 5;
-				score_points = 0;
-			}
+			Ball->body->SetTransform(b2Vec2(Ball_x, Ball_y), 0.0f);
 		}
 	}
-}
+ }

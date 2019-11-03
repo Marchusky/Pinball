@@ -6,8 +6,8 @@
 #include "Box2D/Box2D/Box2D.h"
 #include "p2List.h"
 
-#define Ball_x 572.5f
-#define Ball_y 750.0f
+#define Ball_x 572
+#define Ball_y 750
 #define Ball_radius 11
 
 class ModulePlayer : public Module
@@ -40,8 +40,8 @@ public:
 	bool			dead = false;
 	uint			dead_fx;
 
-	
-private:
 	void SetBallPosition(int x, int y);
+
+private:
 	void Lives();
 };

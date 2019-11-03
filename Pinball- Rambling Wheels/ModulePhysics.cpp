@@ -489,7 +489,3 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 
 	return hit;
 }
-
-// TODO 3
-
-// TODO 7: Call the listeners that are not NULL
