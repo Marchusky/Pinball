@@ -96,7 +96,72 @@ bool ModulePhysics::Start()
 		462+(123), -992  + 2001,
 		900+(94), -992	 + 2001
 	};
-	App->physics->CreateChain(0, 0, map_borders, 123);
+	CreateChain(0, 0, map_borders, 123);
+
+	//--------------Right Stick----------------//
+	int stick[16] = {
+	382, 836,
+	375, 831,
+	369, 832,
+	308, 880,
+	308, 890,
+	317, 894,
+	384, 849,
+	384, 842
+	};
+
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
+
+	b2Body* rightStick = world->CreateBody(&body);
+
+	b2ChainShape shape;
+	b2Vec2* p = new b2Vec2[16 / 2];
+
+	for (uint i = 0; i < 16 / 2; ++i)
+	{
+		p[i].x = PIXEL_TO_METERS(stick[i * 2 + 0]);
+		p[i].y = PIXEL_TO_METERS(stick[i * 2 + 1]);
+	}
+
+	shape.CreateLoop(p, 16 / 2);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 5.0f;
+
+	rightStick->CreateFixture(&fixture);
+
+	delete p;
+
+
+	//static body to fix the stick to//
+
+	b2BodyDef stickBody1_def;
+	stickBody1_def.type = b2_staticBody;
+	stickBody1_def.position.Set(PIXEL_TO_METERS(371.0f), PIXEL_TO_METERS(841.0f));
+
+	b2Body* stickBody1 = world->CreateBody(&stickBody1_def);
+
+	b2CircleShape stickShape1;
+	stickShape1.m_radius = PIXEL_TO_METERS(3.0f);
+
+	b2FixtureDef stickFixture1;
+	stickFixture1.shape = &stickShape1;
+
+	stickBody1->CreateFixture(&stickFixture1);
+
+
+	//right stick Joint//
+	b2RevoluteJointDef rJointDef;
+	rJointDef.Initialize(rightStick, stickBody1, rightStick->GetWorldCenter());
+	rJointDef.lowerAngle = -0.25f * b2_pi; // -45 degrees
+	rJointDef.upperAngle = 0.25f * b2_pi; // 45 degrees
+	rJointDef.enableLimit = true;
+	rJointDef.maxMotorTorque = 10.0f;
+	rJointDef.motorSpeed = 0.0f;
+	rJointDef.enableMotor = true;	rJoint = (b2RevoluteJoint*)world->CreateJoint(&rJointDef);
 
 	//---SPRING CREATION---//
 
@@ -200,8 +265,8 @@ bool ModulePhysics::Start()
 	jointDef.collideConnected = true;
 	jointDef.bodyA = sBody1;
 	jointDef.bodyB = sBody2;
-	jointDef.frequencyHz = 2.0f;
-	jointDef.dampingRatio = 0.3f;
+	jointDef.frequencyHz = 4.0f;
+	jointDef.dampingRatio = 0.5f;
 
 	b2DistanceJoint* joint = (b2DistanceJoint*)world->CreateJoint(&jointDef);
 
@@ -223,12 +288,18 @@ update_status ModulePhysics::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
 		forceON = false;
-		sBody2->ApplyForce(b2Vec2(0, -5000), sBody2->GetWorldCenter(), true);
+		sBody2->ApplyForce(b2Vec2(0, -000), sBody2->GetWorldCenter(), true);
 	}
 
 	if(forceON)
 	{
 		sBody2->ApplyForce(b2Vec2(0, 1000), sBody2->GetWorldCenter(), true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		sBody2->ApplyForce(b2Vec2(0, 1000), sBody2->GetWorldCenter(), true);
+
 	}
 	// TODO: HomeWork
 	/*
@@ -288,10 +359,10 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType bodyType)
 {
 	b2BodyDef body;
-	body.type = b2_staticBody;
+	body.type = bodyType;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);

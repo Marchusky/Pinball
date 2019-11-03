@@ -47,10 +47,11 @@ public:
 	PhysBody* CreateCircle(int x, int y, int radius, float density = 1.0f, b2BodyType bodyType = b2_dynamicBody);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateChain(int x, int y, int* points, int size);
+	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType bodyType = b2_staticBody);
 	
 	b2Body* sBody2;
 
+	b2RevoluteJoint* rJoint;
 	bool forceON = false;
 private:
 
