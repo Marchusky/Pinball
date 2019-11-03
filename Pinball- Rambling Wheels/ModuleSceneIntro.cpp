@@ -41,7 +41,7 @@ bool ModuleSceneIntro::Start()
 	Ball = App->physics->CreateCircle(572.5f, 750.0f, 11, 0.1f);
 
 	//---Obstacles----------------------------------------------------------//
-	PhysBody cats_3000 = App->physics->CreateCircle(572.5f, 195.0f, 15, 0.1f);
+	//PhysBody cats_3000 = App->physics->CreateCircle(572.5f, 195.0f, 15, 0.1f);
 	return ret;
 }
 
