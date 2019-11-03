@@ -20,21 +20,25 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-	PhysBody* Ball;
+	PhysBody*		Ball;
 
-	iPoint			player_position;
+	iPoint			ball_position;
 
 	SDL_Texture*	ball_tex;
 	SDL_Texture*	points;
 
-	char high_score[20];
-	char score[20];
+	char			high_score[20];
+	char			score[20];
 
-	int score_font = -1;
-	int high_score_font = -1;
+	uint32			high_score_points = 0;
+	uint32			score_points = 0;
 
-	bool dead = false;
-	uint dead_fx;
+	int				score_font = -1;
+	int				high_score_font = -1;
+
+	int				lives;
+	bool			dead = false;
+	uint			dead_fx;
 
 	
 private:

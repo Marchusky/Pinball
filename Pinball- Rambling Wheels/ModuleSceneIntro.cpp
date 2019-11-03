@@ -9,9 +9,6 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	//DO ALL PUSHBACKS FROM THE BACKGROUND 
-	
-
 	ball_tex = circle = box = rick = NULL;
 	ray_on = false;
 	sensed = false;
@@ -28,7 +25,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	background = App->textures->Load("pinball/background sprites.png");
+	background = App->textures->Load("sprites/background sprites.png");
 	ball_tex = App->textures->Load("pinball/ball_tex.png");
 	circle = App->textures->Load("pinball/wheel.png"); 
 	box = App->textures->Load("pinball/crate.png");
@@ -38,13 +35,24 @@ bool ModuleSceneIntro::Start()
 	// TODO: Homework - create a sensor
 
 	//---Da Ball-------------------------------------------------------------//
-	Ball = App->physics->CreateCircle(572.5f, 750.0f, 11, 0.1f);
+	//Ball = App->physics->CreateCircle(572.5f, 750.0f, 11, 0.1f);
 
 	//---Obstacles----------------------------------------------------------//
-	//PhysBody cats_3000 = App->physics->CreateCircle(572.5f, 195.0f, 15, 0.1f);
 	PhysBody* cats_3000 = App->physics->CreateCircle(276.5f, 195.0f, 40, 0.1f, b2_staticBody);
 	PhysBody* cats_2000 = App->physics->CreateCircle(367.3f, 271.0f, 40, 0.1f, b2_staticBody);
 	PhysBody* cats_1000 = App->physics->CreateCircle(289.3f, 344.8f, 40, 0.1f, b2_staticBody);
+	
+	//DO ALL PUSHBACKS FROM THE BACKGROUND 
+	background_an.PushBack({ 0, 0, 600, 900 });
+	background_an.PushBack({ 600, 0, 600, 900 });
+	background_an.PushBack({ 1202, -1, 600, 900 });
+	background_an.PushBack({ 1802, 0, 600, 900 });
+	//background_an.PushBack({ 0, 900, 600, 900 });
+	//background_an.PushBack({ 601, 900, 600, 900 });
+	//background_an.PushBack({ 1201, 900, 600, 900 });
+	//background_an.PushBack({ 1801, 900, 600, 900 });
+	background_an.speed = 0.01f;
+	
 	return ret;
 }
 
@@ -66,7 +74,7 @@ update_status ModuleSceneIntro::Update()
 	rect.x = rect.y = 0;
 
 	App->renderer->Blit(background, 0, 0, &rect);
-
+	//App->renderer->Blit(background, 0, 0, &background_an.GetCurrentFrame());
 	
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
