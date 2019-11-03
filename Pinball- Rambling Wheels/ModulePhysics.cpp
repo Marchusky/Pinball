@@ -1,3 +1,4 @@
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
@@ -161,7 +162,10 @@ bool ModulePhysics::Start()
 	rJointDef.enableLimit = true;
 	rJointDef.maxMotorTorque = 10.0f;
 	rJointDef.motorSpeed = 0.0f;
-	rJointDef.enableMotor = true;	rJoint = (b2RevoluteJoint*)world->CreateJoint(&rJointDef);
+	rJointDef.enableMotor = true;
+
+	rJoint = (b2RevoluteJoint*)world->CreateJoint(&rJointDef);
+
 
 	//---SPRING CREATION---//
 
@@ -561,6 +565,3 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	return hit;
 }
 
-// TODO 3
-
-// TODO 7: Call the listeners that are not NULL
