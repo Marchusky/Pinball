@@ -42,6 +42,9 @@ bool ModuleSceneIntro::Start()
 
 	//---Obstacles----------------------------------------------------------//
 	//PhysBody cats_3000 = App->physics->CreateCircle(572.5f, 195.0f, 15, 0.1f);
+	PhysBody* cats_3000 = App->physics->CreateCircle(276.5f, 195.0f, 40, 0.1f, b2_staticBody);
+	PhysBody* cats_2000 = App->physics->CreateCircle(367.3f, 271.0f, 40, 0.1f, b2_staticBody);
+	PhysBody* cats_1000 = App->physics->CreateCircle(289.3f, 344.8f, 40, 0.1f, b2_staticBody);
 	return ret;
 }
 
