@@ -62,7 +62,7 @@ update_status ModulePlayer::Update()
 
 void ModulePlayer::SetBallPosition(int x, int y)
 {
-	Ball = App->physics->CreateCircle(Ball_x, Ball_y, Ball_radius, 0.1f);
+	Ball = App->physics->CreateCircle(Ball_x, Ball_y, Ball_radius, 0.0.5f);
 }
 
 void ModulePlayer::Lives()

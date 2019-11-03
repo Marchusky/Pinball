@@ -8,7 +8,7 @@
 
 #define Ball_x 572
 #define Ball_y 750
-#define Ball_radius 11
+#define Ball_radius 13
 
 class ModulePlayer : public Module
 {
